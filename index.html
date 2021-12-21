@@ -80,7 +80,12 @@
             <li class="nav-item mr-sm-4 m-lg-0">
               <a class="nav-link">Orders</a>
             </li>
-            <li class="nav-item mr-sm-4 m-lg-0">
+            <li
+              class="nav-item mr-sm-4 m-lg-0"
+              onclick="generateCart()"
+              data-toggle="modal"
+              data-target="#cart"
+            >
               <i class="fas fa-cart-plus"></i>
               <span id="total-cart">0</span>
             </li>
@@ -179,6 +184,56 @@
                 </div>
               </div>
             </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="cart"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- <div class="book-cart d-flex justify-content-between">
+              <div class="d-flex">
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/I/91xrEMcvmQL.jpg"
+                />
+                <div class="book-cart-info d-flex flex-column ml-2">
+                  <span>Pandemic (The Extinction Files, Book 1)</span>
+                  <span class="mt-2">Remove</span>
+                </div>
+              </div>
+              <div>
+                <span>9.99</span>
+              </div>
+            </div> -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>

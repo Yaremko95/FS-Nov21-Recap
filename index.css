@@ -99,3 +99,20 @@ body {
 .book-info {
   height: 75px;
 }
+
+.book-cart img {
+  width: 60px;
+}
+
+.book-cart-info {
+  width: 60%;
+}
+.book-cart-info span:first-of-type {
+  font-size: 14px;
+}
+.book-cart-info span:last-of-type {
+  font-size: 14px;
+  color: #565959;
+  font-style: italic;
+  cursor: pointer;
+}

@@ -147,6 +147,10 @@ const data = [
   },
 ];
 
+const cart = [];
+const totalIcon = document.getElementById("total-cart");
+const modalBody = document.querySelector(".modal-body");
+
 const generateBookCardOption1 = function (book) {
   const col = document.createElement("div");
   col.className = "col col-sm-12 col-md-4 col-lg-2";
@@ -205,7 +209,7 @@ const generateBookCardOption1 = function (book) {
 const generateBookCardOption2 = function (book) {
   const card = `
      <div class="col col-sm-12 col-md-4 col-lg-2">
-              <div class="book-card">
+              <div class="book-card" id="${book.asin}">
                 <img
                   src="${book.img}"
                 />
@@ -282,8 +286,48 @@ const generateConditions = function (books) {
   }
 };
 
+const addToCart = function () {
+  const carBtns = document.querySelectorAll(".add-to-cart");
+
+  for (let i = 0; i < carBtns.length; i++) {
+    carBtns[i].addEventListener("click", function (e) {
+      const id = e.target.closest(".book-card").id;
+      cart.push(id);
+
+      totalIcon.innerText = cart.length;
+
+      console.log(cart);
+    });
+  }
+};
+
+const generateCart = function () {
+  for (let i = 0; i < data.length; i++) {
+    if (cart.includes(data[i].asin)) {
+      const bookCart = `
+           <div class="book-cart d-flex justify-content-between mb-2">
+              <div class="d-flex">
+                <img
+                  src="${data[i].img}"
+                />
+                <div class="book-cart-info d-flex flex-column ml-2">
+                  <span>${data[i].title}</span>
+                  <span class="mt-2">Remove</span>
+                </div>
+              </div>
+              <div>
+                <span>$${data[i].price}</span>
+              </div>
+            </div>
+      `;
+      modalBody.innerHTML += bookCart;
+    }
+  }
+};
+
 window.onload = function () {
   generateBooks(data);
   generateCategories(data);
   generateConditions(data);
+  addToCart();
 };
