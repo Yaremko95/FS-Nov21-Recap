@@ -48,16 +48,17 @@
             flex-sm-column flex-lg-row
           "
         >
-          <form
+          <div
             class="form-inline my-2 my-lg-0 d-flex justify-content-lg-center"
           >
             <input
               class="form-control mr-sm-2"
+              id="search"
               type="search"
               placeholder="Search"
               aria-label="Search"
             />
-          </form>
+          </div>
           <ul class="navbar-nav flex-sm-row d-flex align-items-center">
             <li class="nav-item dropdown mr-sm-4 m-lg-0">
               <a
@@ -135,7 +136,13 @@
               aria-describedby="emailHelp"
               placeholder="$ max"
             />
-            <button type="button" class="btn btn-outline-secondary">Go</button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              id="filter-price"
+            >
+              Go
+            </button>
           </div>
           <div class="filters-group form-group categories-filters mb-4">
             <h6>Categories</h6>
@@ -226,13 +233,9 @@
             </div> -->
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
+            <div class="mr-2">
+              <span>Total: </span><span id="totalPrice">$0.00</span>
+            </div>
             <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>

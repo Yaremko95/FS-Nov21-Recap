@@ -148,6 +148,17 @@ const data = [
 ];
 
 const cart = [];
+
+const filters = {
+  search: "",
+  price: {
+    min: null,
+    max: null,
+  },
+  condition: [],
+  categories: [],
+};
+
 const totalIcon = document.getElementById("total-cart");
 const modalBody = document.querySelector(".modal-body");
 
@@ -231,6 +242,7 @@ const generateBookCardOption2 = function (book) {
                 <div class="book-title">
                   <span> ${book.title}</span>
                 </div>
+                <div style="font-size:10px">${book.condition}</div>
                 <div class="d-flex w-100 justify-content-between">
                   <span class="book-category">${book.category}</span>
                   <span class="book-price">${book.price}</span>
@@ -241,11 +253,9 @@ const generateBookCardOption2 = function (book) {
   return card;
 };
 
-function clickMe() {
-  console.log("clicked");
-}
 const generateBooks = function (books) {
   const booksContainer = document.getElementById("books");
+  booksContainer.innerHTML = "";
   for (let i = 0; i < books.length; i++) {
     const cardAsTemplate = generateBookCardOption2(books[i]);
     booksContainer.innerHTML += cardAsTemplate;
@@ -303,8 +313,11 @@ const addToCart = function () {
 
 const generateCart = function () {
   modalBody.innerHTML = "";
+  const totalSumDiv = document.getElementById("totalPrice");
+  let total = 0;
   for (let i = 0; i < data.length; i++) {
     if (cart.includes(data[i].asin)) {
+      total += data[i].price;
       const bookCart = `
            <div class="book-cart d-flex justify-content-between mb-2" id="${data[i].asin}">
               <div class="d-flex">
@@ -322,6 +335,7 @@ const generateCart = function () {
             </div>
       `;
       modalBody.innerHTML += bookCart;
+      totalSumDiv.innerText = `$${total}`;
     }
   }
 };
@@ -335,9 +349,126 @@ const removeFromCart = function (e) {
   console.log(cart);
 };
 
+const filterByCategory = function (arr) {
+  const temp = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (filters.categories.includes(arr[i].category)) {
+      temp.push(arr[i]);
+    }
+  }
+  return temp;
+};
+
+const filterBycondition = function (arr) {
+  const temp = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (filters.condition.includes(arr[i].condition)) {
+      temp.push(arr[i]);
+    }
+  }
+  return temp;
+};
+
+const filterByPrice = function (arr, min, max) {
+  const temp = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].price >= parseInt(min) && arr[i].price <= parseInt(max)) {
+      temp.push(arr[i]);
+    }
+  }
+
+  return temp;
+};
+
+const priceListener = function () {
+  document
+    .getElementById("filter-price")
+    .addEventListener("click", function (e) {
+      filters.price.min = document.getElementById("minPrice").value;
+      filters.price.max = document.getElementById("maxPrice").value;
+      applyFilters();
+    });
+};
+
+const categoriesListener = function () {
+  const checkBoxes = document.querySelectorAll(".categories-filters input");
+  for (let i = 0; i < checkBoxes.length; i++) {
+    checkBoxes[i].addEventListener("click", function (e) {
+      console.log(e.target.checked, e.target.id);
+      const checked = e.target.checked;
+      const id = e.target.id;
+      if (checked) {
+        filters.categories.push(id);
+      } else {
+        const index = filters.categories.indexOf(id);
+        filters.categories.splice(index, 1);
+      }
+      applyFilters();
+    });
+  }
+};
+
+const conditionsListener = function () {
+  const checkBoxes = document.querySelectorAll(".conditions-filters input");
+  for (let i = 0; i < checkBoxes.length; i++) {
+    checkBoxes[i].addEventListener("click", function (e) {
+      const checked = e.target.checked;
+      const id = e.target.id;
+      if (checked) {
+        filters.condition.push(id);
+      } else {
+        const index = filters.condition.indexOf(id);
+        filters.condition.splice(index, 1);
+      }
+      applyFilters();
+    });
+  }
+};
+
+const applyFilters = function () {
+  let filtered = data;
+  if (filters.search.length > 0) {
+    filtered = filterBySearch(filtered, filters.search);
+  }
+  if (filters.price.min && filters.price.max) {
+    filtered = filterByPrice(filtered, filters.price.min, filters.price.max);
+  }
+  if (filters.condition.length > 0) {
+    filtered = filterBycondition(filtered);
+  }
+  if (filters.categories.length > 0) {
+    filtered = filterByCategory(filtered);
+  }
+
+  generateBooks(filtered);
+  addToCart();
+};
+
+const filterBySearch = function (arr, value) {
+  const temp = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].title.toLowerCase().includes(value.toLowerCase())) {
+      temp.push(arr[i]);
+    }
+  }
+
+  return temp;
+};
+const searchListener = function () {
+  document.getElementById("search").addEventListener("change", function (e) {
+    console.log(e.target.value);
+    filters.search = e.target.value;
+    applyFilters();
+  });
+};
+
 window.onload = function () {
   generateBooks(data);
   generateCategories(data);
   generateConditions(data);
-  addToCart();
+  applyFilters();
+  searchListener();
+  categoriesListener();
+  conditionsListener();
+  priceListener();
 };
