@@ -302,17 +302,18 @@ const addToCart = function () {
 };
 
 const generateCart = function () {
+  modalBody.innerHTML = "";
   for (let i = 0; i < data.length; i++) {
     if (cart.includes(data[i].asin)) {
       const bookCart = `
-           <div class="book-cart d-flex justify-content-between mb-2">
+           <div class="book-cart d-flex justify-content-between mb-2" id="${data[i].asin}">
               <div class="d-flex">
                 <img
                   src="${data[i].img}"
                 />
                 <div class="book-cart-info d-flex flex-column ml-2">
                   <span>${data[i].title}</span>
-                  <span class="mt-2">Remove</span>
+                  <span class="mt-2 " onclick="removeFromCart(event)">Remove</span>
                 </div>
               </div>
               <div>
@@ -323,6 +324,15 @@ const generateCart = function () {
       modalBody.innerHTML += bookCart;
     }
   }
+};
+
+const removeFromCart = function (e) {
+  const id = e.target.closest(".book-cart").id;
+  e.target.closest(".book-cart").remove();
+  const index = cart.indexOf(id);
+  cart.splice(index, 1);
+  totalIcon.innerText = cart.length;
+  console.log(cart);
 };
 
 window.onload = function () {
